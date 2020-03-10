@@ -1,0 +1,42 @@
+server:
+  port: 7000
+spring:
+  application:
+    name: edu-api-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: teacher_route
+          uri: lb://edu-teacher-management
+          order: 1
+          predicates:
+            - Path=/teacher_serv/**
+          filters:
+            - StripPrefix=1
+
+        - id: course_route
+          uri: lb://edu-course-management
+          predicates:
+            - Path=/edu-course-management/**
+          filters:
+            - StripPrefix=1
+
+        - id: oss_route
+          uri: lb://edu-aliyun-oss
+          predicates:
+            - Path=/edu-aliyun-oss/**
+          filters:
+            - StripPrefix=1
+
+  zipkin:
+    base-url: http://127.0.0.1:9411/
+    discovery-client-enabled: false
+  sleuth:
+    sampler:
+      probability: 0.1

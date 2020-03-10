@@ -1,0 +1,26 @@
+aliyun:
+  oss:
+    file:
+      bucketname: qianqianstudy-file
+      endpoint: oss-cn-shenzhen.aliyuncs.com
+      filehost: avatar
+      keyid: LTAI4FeSAxe9GfLxF1enHMff
+      keysecret: q1A0dRMsoCz7RB48kiRSg17Nx5kjeD
+server:
+  port: 8001
+spring:
+  application:
+    name: edu-aliyun-oss
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+  zipkin:
+    base-url: http://127.0.0.1:9411/
+    discovery-client-enabled: false
+  sleuth:
+    sampler:
+      probability: 0.1
+  profiles:
+    active: dev
