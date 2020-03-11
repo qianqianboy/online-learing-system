@@ -66,5 +66,23 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         }
     }
 
-
+    @Override
+    public boolean updateCourseInfoById(CourseInfoForm courseInfoForm) {
+        //保存课程基本信息
+        EduCourse course = new EduCourse();
+        BeanUtils.copyProperties(courseInfoForm, course);
+        boolean resultCourseInfo = this.updateById(course);
+        if (!resultCourseInfo) {
+            throw new QianQianException(20002, "课程信息保存失败");
+        }
+        //保存课程详情信息
+        EduCourseDescription courseDescription = new EduCourseDescription();
+        courseDescription.setDescription(courseInfoForm.getDescription());
+        courseDescription.setId(course.getId());
+        boolean resultDescription = courseDescriptionService.updateById(courseDescription);
+        if (!resultDescription) {
+            throw new QianQianException(20002, "课程详情信息保存失败");
+        }
+        return true;
+    }
 }

@@ -85,5 +85,13 @@ public class EduCourseController {
         return courseInfoForm!=null ? R.ok().data("item", courseInfoForm).message("回显成功！"):R.error().message("回显失败！");
     }
 
+    @ApiOperation(value = "更新课程")
+    @PutMapping("update-course-info")
+    public R updateCourseInfoById(
+            @ApiParam(name = "CourseInfoForm", value = "课程基本信息", required = true)
+            @RequestBody CourseInfoForm courseInfoForm){
+        return courseService.updateCourseInfoById(courseInfoForm) ? R.ok():R.error().message("修改失败！");
+    }
+
 }
 

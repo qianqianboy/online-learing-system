@@ -62,7 +62,7 @@ public class CodeGenerate {
 
         // 5、策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude(moduleName + "_course_description");//设置要映射的表名
+        strategy.setInclude(moduleName + "_video");//设置要映射的表名
         strategy.setNaming(NamingStrategy.underline_to_camel);//数据库表映射到实体的命名策略
         strategy.setTablePrefix(pc.getModuleName() + "_");//设置表前缀不生成
 

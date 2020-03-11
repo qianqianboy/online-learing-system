@@ -27,4 +27,10 @@ public interface EduCourseService extends IService<EduCourse> {
      * @return 课程基本信息表单对象
      */
     CourseInfoForm echoByCourseId(String courseId);
+
+    /**
+     *修改课程基本信息
+     * @param courseInfoForm 课程基本信息表单对象
+     */
+    boolean updateCourseInfoById(CourseInfoForm courseInfoForm);
 }
