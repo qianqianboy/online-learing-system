@@ -69,6 +69,11 @@ public class EduCourse implements Serializable {
     @Version
     private Integer version;
 
+    @ApiModelProperty(value = "逻辑删除 1（true）已删除， 0（false）未删除")
+    @TableLogic
+    @TableField(value = "is_deleted")
+    private Boolean deleted;
+
     @ApiModelProperty(value = "视频状态 Draft未发布  Normal已发布")
     private String status;
 
