@@ -1,8 +1,10 @@
 package com.qianqian.edu.course.management.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.qianqian.edu.common.dto.form.CourseInfoForm;
 import com.qianqian.edu.common.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.qianqian.edu.course.management.query.CourseQuery;
 
 /**
  * <p>
@@ -33,4 +35,6 @@ public interface EduCourseService extends IService<EduCourse> {
      * @param courseInfoForm 课程基本信息表单对象
      */
     boolean updateCourseInfoById(CourseInfoForm courseInfoForm);
+
+    void pageQuery(Page<EduCourse> pageParam, CourseQuery courseQuery);
 }

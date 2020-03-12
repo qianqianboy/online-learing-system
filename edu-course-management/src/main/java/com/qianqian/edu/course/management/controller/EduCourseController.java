@@ -2,11 +2,10 @@ package com.qianqian.edu.course.management.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.qianqian.edu.common.constants.ResultCodeEnum;
 import com.qianqian.edu.common.dto.form.CourseInfoForm;
 import com.qianqian.edu.common.entity.EduCourse;
-import com.qianqian.edu.common.exception.QianQianException;
 import com.qianqian.edu.common.vo.R;
+import com.qianqian.edu.course.management.query.CourseQuery;
 import com.qianqian.edu.course.management.service.EduCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,25 +32,43 @@ public class EduCourseController {
     @Autowired
     private EduCourseService courseService;
 
-    @ApiOperation(value = "查询课程列表(不带条件)")
+//    @ApiOperation(value = "查询课程列表(不带条件)")
+//    @GetMapping("{page}/{limit}")
+//    public R pageList(
+//            @ApiParam(name = "page", value = "当前页码", required = true)
+//            @PathVariable Long page,
+//            @ApiParam(name = "limit", value = "每页记录数", defaultValue = "10",required = true)
+//            @PathVariable(required = false) Long limit) {
+//        if(page <= 0 || limit <= 0){
+//            //throw new QianQianException(5001, "参数错误");
+//            throw new QianQianException(ResultCodeEnum.QUERY_TOTAL_ERROR);
+//        }
+//        Page<EduCourse> pageParam = new Page<>(page, limit);
+//
+//        courseService.page(pageParam, null);
+//        List<EduCourse> records = pageParam.getRecords();
+//        long total = pageParam.getTotal();
+//        return R.ok().data("total", total).data("items", records);
+//    }
+
+    @ApiOperation(value = "分页查询课程列表")
     @GetMapping("{page}/{limit}")
-    public R pageList(
+    public R pageQuery(
             @ApiParam(name = "page", value = "当前页码", required = true)
             @PathVariable Long page,
-            @ApiParam(name = "limit", value = "每页记录数", defaultValue = "10",required = true)
-            @PathVariable(required = false) Long limit) {
-        if(page <= 0 || limit <= 0){
-            //throw new QianQianException(5001, "参数错误");
-            throw new QianQianException(ResultCodeEnum.QUERY_TOTAL_ERROR);
-        }
-        Page<EduCourse> pageParam = new Page<>(page, limit);
 
-        courseService.page(pageParam, null);
+            @ApiParam(name = "limit", value = "每页记录数", required = true)
+            @PathVariable Long limit,
+
+            @ApiParam(name = "courseQuery", value = "查询对象", required = false)
+                    CourseQuery courseQuery){
+
+        Page<EduCourse> pageParam = new Page<>(page, limit);
+        courseService.pageQuery(pageParam, courseQuery);
         List<EduCourse> records = pageParam.getRecords();
         long total = pageParam.getTotal();
-        return R.ok().data("total", total).data("items", records);
+        return  R.ok().data("total", total).data("rows", records);
     }
-
 
     @ApiOperation(value = "新增课程基本信息")
     @PostMapping("save-course-info")
