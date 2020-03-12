@@ -34,6 +34,22 @@ spring:
           filters:
             - StripPrefix=1
 
+        - id: statistics_route
+          uri: lb://edu-statistics-center
+          order: 1
+          predicates:
+            - Path=/edu-statistics-center/**
+          filters:
+            - StripPrefix=1
+
+        - id: membercenter_route
+          uri: lb://edu-member-center
+          order: 1
+          predicates:
+            - Path=/edu-member-center/**
+          filters:
+            - StripPrefix=1
+
   zipkin:
     base-url: http://127.0.0.1:9411/
     discovery-client-enabled: false

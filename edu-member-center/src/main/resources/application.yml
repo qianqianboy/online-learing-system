@@ -33,7 +33,7 @@ spring:
     sentinel:
       transport:
         port: 9999
-        dashboard: 127.0.0.1:8080
+        dashboard: localhost:9090
       filter:
         enabled: false
   zipkin:
