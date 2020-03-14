@@ -11,6 +11,7 @@ import com.qianqian.edu.course.management.mapper.EduCourseMapper;
 import com.qianqian.edu.course.management.query.CourseQuery;
 import com.qianqian.edu.course.management.service.EduCourseDescriptionService;
 import com.qianqian.edu.course.management.service.EduCourseService;
+import com.qianqian.edu.course.management.vo.CoursePublishVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,7 +95,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public void pageQuery(Page<EduCourse> pageParam, CourseQuery courseQuery) {
         QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("gmt_create");
-
+        queryWrapper.notIn("status",EduCourse.COURSE_DRAFT);
         if (courseQuery == null){
             baseMapper.selectPage(pageParam, queryWrapper);
             return;
@@ -122,5 +123,56 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         }
 
         baseMapper.selectPage(pageParam, queryWrapper);
+    }
+
+    @Override
+    public CoursePublishVo getCoursePublishVoById(String id) {
+        return baseMapper.selectCoursePublishVoById(id);
+    }
+
+    @Override
+    public void getCheckPendingList(Page<EduCourse> pageParam, CourseQuery courseQuery) {
+        QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("gmt_create");
+        queryWrapper.eq("status",EduCourse.COURSE_Pending);
+
+        if (courseQuery == null){
+
+            baseMapper.selectPage(pageParam, queryWrapper);
+            return;
+        }
+
+        String title = courseQuery.getTitle();
+        String teacherId = courseQuery.getTeacherId();
+        String subjectParentId = courseQuery.getSubjectParentId();
+        String subjectId = courseQuery.getSubjectId();
+
+        if (!StringUtils.isEmpty(title)) {
+            queryWrapper.like("title", title);
+        }
+
+        if (!StringUtils.isEmpty(teacherId) ) {
+            queryWrapper.eq("teacher_id", teacherId);
+        }
+
+        if (!StringUtils.isEmpty(subjectParentId)) {
+            queryWrapper.ge("subject_parent_id", subjectParentId);
+        }
+
+        if (!StringUtils.isEmpty(subjectId)) {
+            queryWrapper.ge("subject_id", subjectId);
+        }
+
+        baseMapper.selectPage(pageParam, queryWrapper);
+    }
+
+    @Override
+    public boolean publishCourse(String id) {
+        return baseMapper.updateById(baseMapper.selectById(id).setStatus(EduCourse.COURSE_NORMAL))==1;
+    }
+
+    @Override
+    public boolean failedCourse(String id) {
+        return baseMapper.updateById(baseMapper.selectById(id).setStatus(EduCourse.COURSE_Failed))==1;
     }
 }

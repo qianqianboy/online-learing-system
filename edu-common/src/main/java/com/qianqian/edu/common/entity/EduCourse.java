@@ -27,8 +27,10 @@ public class EduCourse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final String COURSE_DRAFT = "Draft";
-    public static final String COURSE_NORMAL = "Normal";
+    public static final String COURSE_DRAFT = "Draft";//未发布
+    public static final String COURSE_NORMAL = "Normal";//已发布
+    public static final String COURSE_Pending = "Pending"; //待审核
+    public static final String COURSE_Failed = "Failed";//审核失败
 
     @ApiModelProperty(value = "课程ID")
     @TableId(value = "id", type = IdType.ID_WORKER_STR)

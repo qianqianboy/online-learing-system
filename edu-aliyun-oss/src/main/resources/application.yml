@@ -4,10 +4,10 @@ aliyun:
       bucketname: qianqianstudy-file
       endpoint: oss-cn-shenzhen.aliyuncs.com
       filehost: avatar
-      keyid: yourKeyId
-      keysecret: your KeySecret
+      keyid: LTAI4FeSAxe9GfLxF1enHMff
+      keysecret: q1A0dRMsoCz7RB48kiRSg17Nx5kjeD
 server:
-  port: 8001
+  port: 8008
 spring:
   application:
     name: edu-aliyun-oss

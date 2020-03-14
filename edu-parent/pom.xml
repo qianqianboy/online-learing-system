@@ -11,6 +11,7 @@
         <module>../edu-api-gateway</module>
         <module>../edu-member-center</module>
         <module>../edu-statistics-center</module>
+        <module>../edu-video</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

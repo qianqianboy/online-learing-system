@@ -1,7 +1,8 @@
 package com.qianqian.edu.course.management.mapper;
 
-import com.qianqian.edu.common.entity.EduCourse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.qianqian.edu.common.entity.EduCourse;
+import com.qianqian.edu.course.management.vo.CoursePublishVo;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface EduCourseMapper extends BaseMapper<EduCourse> {
 
+    CoursePublishVo selectCoursePublishVoById(String id);
 }

@@ -5,6 +5,7 @@ import com.qianqian.edu.common.dto.form.CourseInfoForm;
 import com.qianqian.edu.common.entity.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.qianqian.edu.course.management.query.CourseQuery;
+import com.qianqian.edu.course.management.vo.CoursePublishVo;
 
 /**
  * <p>
@@ -37,4 +38,12 @@ public interface EduCourseService extends IService<EduCourse> {
     boolean updateCourseInfoById(CourseInfoForm courseInfoForm);
 
     void pageQuery(Page<EduCourse> pageParam, CourseQuery courseQuery);
+
+    CoursePublishVo getCoursePublishVoById(String id);
+
+    void getCheckPendingList(Page<EduCourse> pageParam, CourseQuery courseQuery);
+
+    boolean publishCourse(String id);
+
+    boolean failedCourse(String id);
 }

@@ -1,0 +1,16 @@
+aliyun:
+  vod:
+    file:
+      keyid: LTAI4FeaHtyyBavbWNQFLcpm
+      keysecret: HRcgxHt20i7BKA8TQjIXlZ8F0G0dCw
+server:
+  port: 8009
+spring:
+  application:
+    name: edu-video
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB

@@ -7,6 +7,7 @@ import com.qianqian.edu.common.entity.EduCourse;
 import com.qianqian.edu.common.vo.R;
 import com.qianqian.edu.course.management.query.CourseQuery;
 import com.qianqian.edu.course.management.service.EduCourseService;
+import com.qianqian.edu.course.management.vo.CoursePublishVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -108,6 +109,50 @@ public class EduCourseController {
             @ApiParam(name = "CourseInfoForm", value = "课程基本信息", required = true)
             @RequestBody CourseInfoForm courseInfoForm){
         return courseService.updateCourseInfoById(courseInfoForm) ? R.ok():R.error().message("修改失败！");
+    }
+
+
+    @ApiOperation(value = "根据ID获取课程发布信息")
+    @GetMapping("course-publish-info/{id}")
+    public R getCoursePublishVoById(
+            @ApiParam(name = "id", value = "课程ID", required = true)
+            @PathVariable String id){
+
+        CoursePublishVo courseInfoForm = courseService.getCoursePublishVoById(id);
+        return R.ok().data("item", courseInfoForm);
+    }
+
+
+
+    @ApiOperation(value = "分页查询待审核课程列表")
+    @GetMapping("check-pending-list/{page}/{limit}")
+    public R getCheckPendingList(
+            @ApiParam(name = "page", value = "当前页码", required = true)
+            @PathVariable Long page,
+
+            @ApiParam(name = "limit", value = "每页记录数", required = true)
+            @PathVariable Long limit,
+
+            @ApiParam(name = "courseQuery", value = "查询对象")
+                    CourseQuery courseQuery){
+
+        Page<EduCourse> pageParam = new Page<>(page, limit);
+        courseService.getCheckPendingList(pageParam, courseQuery);
+        List<EduCourse> records = pageParam.getRecords();
+        long total = pageParam.getTotal();
+        return  R.ok().data("total", total).data("rows", records);
+    }
+
+    @ApiOperation(value = "发布课程")
+    @PutMapping("publish-course/{id}")
+    public R publish(@PathVariable String id){
+        return courseService.publishCourse(id) ? R.ok() : R.error().message("发布失败！");
+    }
+
+    @ApiOperation(value = "驳回课程")
+    @PutMapping("fail-course/{id}")
+    public R fail(@PathVariable String id){
+        return courseService.failedCourse(id) ? R.ok() : R.error().message("驳回失败！");
     }
 
 }
