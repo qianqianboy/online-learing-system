@@ -88,9 +88,12 @@ public class GatewayConfiguration {
         GatewayCallbackManager.setBlockHandler(blockRequestHandler);
     }
 
+    /**
+     * 解决跨域问题
+     * @return
+     */
     @Bean
     public WebFilter corsFilter() {
-
         return (ServerWebExchange ctx, WebFilterChain chain) -> {
             ServerHttpRequest request = ctx.getRequest();
             if (CorsUtils.isCorsRequest(request)) {
@@ -111,7 +114,6 @@ public class GatewayConfiguration {
                     response.setStatusCode(HttpStatus.OK);
                     return Mono.empty();
                 }
-
             }
             return chain.filter(ctx);
         };

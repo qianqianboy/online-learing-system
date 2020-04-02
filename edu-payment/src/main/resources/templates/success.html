@@ -13,47 +13,24 @@
 <script>
     var player = new Aliplayer({
             "id": "player-con",
-            "source": "https://outin-89547708661211eab02000163e1a625e.oss-cn-shanghai.aliyuncs.com/sv/2a0c272d-170da3458e5/2a0c272d-170da3458e5.mp4?Expires=1584214981&OSSAccessKeyId=LTAI4FfD63zoqnm6ckiBFfXZ&Signature=6P0fzXhdBiaUR%2FAUY4sD%2BwseJ9Y%3D",
-            "width": "60%",
+            "source": "//player.alicdn.com/video/aliyunmedia.mp4",
+            "width": "100%",
             "height": "500px",
             "autoplay": true,
             "isLive": false,
             "rePlay": false,
-            "playsinline": true,
-            "preload": true,
-            "controlBarVisibility": "hover",
-            "useH5Prism": true,
-            "extraInfo": {
-                "crossOrigin": "anonymous"
-            },
+            "showBuffer": true,
+            "loadDataTimeout": "20",
+            "language": "zh-cn",
+            "snapshot": true,
+            "showBarTime": 5000,
+            "useFlashPrism": true,
             "skinLayout": [
                 {
                     "name": "bigPlayButton",
                     "align": "blabs",
                     "x": 30,
                     "y": 80
-                },
-                {
-                    "name": "H5Loading",
-                    "align": "cc"
-                },
-                {
-                    "name": "errorDisplay",
-                    "align": "tlabs",
-                    "x": 0,
-                    "y": 0
-                },
-                {
-                    "name": "infoDisplay"
-                },
-                {
-                    "name": "tooltip",
-                    "align": "blabs",
-                    "x": 0,
-                    "y": 56
-                },
-                {
-                    "name": "thumbnail"
                 },
                 {
                     "name": "controlBar",
@@ -63,51 +40,75 @@
                     "children": [
                         {
                             "name": "progress",
-                            "align": "blabs",
+                            "align": "tlabs",
                             "x": 0,
-                            "y": 44
+                            "y": 0
                         },
                         {
                             "name": "playButton",
                             "align": "tl",
                             "x": 15,
-                            "y": 12
+                            "y": 26
+                        },
+                        {
+                            "name": "nextButton",
+                            "align": "tl",
+                            "x": 10,
+                            "y": 26
                         },
                         {
                             "name": "timeDisplay",
                             "align": "tl",
                             "x": 10,
-                            "y": 7
+                            "y": 24
                         },
                         {
                             "name": "fullScreenButton",
                             "align": "tr",
                             "x": 10,
-                            "y": 12
+                            "y": 25
                         },
                         {
-                            "name": "subtitle",
+                            "name": "streamButton",
                             "align": "tr",
-                            "x": 15,
-                            "y": 12
-                        },
-                        {
-                            "name": "setting",
-                            "align": "tr",
-                            "x": 15,
-                            "y": 12
+                            "x": 10,
+                            "y": 23
                         },
                         {
                             "name": "volume",
                             "align": "tr",
-                            "x": 5,
-                            "y": 10
+                            "x": 10,
+                            "y": 25
+                        }
+                    ]
+                },
+                {
+                    "name": "fullControlBar",
+                    "align": "tlabs",
+                    "x": 0,
+                    "y": 0,
+                    "children": [
+                        {
+                            "name": "fullTitle",
+                            "align": "tl",
+                            "x": 25,
+                            "y": 6
                         },
                         {
-                            "name": "snapshot",
+                            "name": "fullNormalScreenButton",
+                            "align": "tr",
+                            "x": 24,
+                            "y": 13
+                        },
+                        {
+                            "name": "fullTimeDisplay",
                             "align": "tr",
                             "x": 10,
                             "y": 12
+                        },
+                        {
+                            "name": "fullZoom",
+                            "align": "cc"
                         }
                     ]
                 }
@@ -116,15 +117,5 @@
             console.log("The player is created");
         }
     );
-    /* h5截图按钮, 截图成功回调 */
-    player.on('snapshoted', function (data) {
-        var pictureData = data.paramData.base64
-        var downloadElement = document.createElement('a')
-        downloadElement.setAttribute('href', pictureData)
-        var fileName = 'Aliplayer' + Date.now() + '.png'
-        downloadElement.setAttribute('download', fileName)
-        downloadElement.click()
-        pictureData = null
-    })
 </script>
 </body>

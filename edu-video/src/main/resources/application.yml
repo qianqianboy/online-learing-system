@@ -4,10 +4,17 @@ aliyun:
       keyid: LTAI4FeaHtyyBavbWNQFLcpm
       keysecret: HRcgxHt20i7BKA8TQjIXlZ8F0G0dCw
 server:
-  port: 8009
+  port: 8900
 spring:
   application:
     name: edu-video
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  zipkin:
+      base-url: http://127.0.0.1:9411/
+      discovery-client-enabled: false
   profiles:
     active: dev
   servlet:

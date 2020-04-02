@@ -22,4 +22,32 @@
     INNER JOIN edu_teacher t ON c.teacher_id=t.id
     WHERE c.id=#{id}
   </select>
+
+    <select id="selectInfoWebById" resultType="com.qianqian.edu.common.vo.CourseWebVo">
+        SELECT
+            c.id,
+            c.title,
+            c.cover,
+            c.lesson_num AS lessonNums,
+            c.buy_count,
+            c.view_count,
+            CONVERT(c.price, DECIMAL(8,2)) AS price,
+            d.description,
+            c.subject_id,
+            c.subject_parent_id,
+            c.subject_grand_parent_id,
+            s1.title AS levelThree,
+            s2.title AS levelTwo,
+            s3.title AS levelOne,
+            t.avatar,
+            t.name AS teacherName,
+            t.intro,t.career
+        FROM edu_course AS c
+                 INNER JOIN edu_course_description d ON c.id=d.id
+                 INNER JOIN edu_subject s1 ON c.subject_id=s1.id
+                 INNER JOIN edu_subject s2 ON c.subject_parent_id=s2.id
+                 INNER JOIN edu_subject s3 ON c.subject_grand_parent_id=s3.id
+                 INNER JOIN edu_teacher t ON c.teacher_id=t.id
+        WHERE c.id=#{id}
+    </select>
 </mapper>

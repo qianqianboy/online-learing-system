@@ -1,6 +1,9 @@
+
 spring:
   application:
     name: edu-course-management
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       config:
@@ -8,3 +11,5 @@ spring:
         file-extension: yaml
   profiles:
     active: dev
+server:
+  port: 8200

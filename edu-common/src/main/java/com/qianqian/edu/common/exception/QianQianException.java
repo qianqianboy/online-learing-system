@@ -26,7 +26,7 @@ public class QianQianException extends RuntimeException{
      * @param message
      */
     public QianQianException(Integer code, String message) {
-        super(message);
+        this.message=message;
         this.code=code;
     }
 

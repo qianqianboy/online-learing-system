@@ -50,6 +50,44 @@ spring:
           filters:
             - StripPrefix=1
 
+        - id: video_route
+          uri: lb://edu-video
+          order: 1
+          predicates:
+            - Path=/edu-video/**
+          filters:
+            - StripPrefix=1
+
+        - id: order_route
+          uri: lb://edu-order
+          order: 1
+          predicates:
+            - Path=/edu-order/**
+          filters:
+            - StripPrefix=1
+
+        - id: pay_route
+          uri: lb://edu-payment
+          order: 1
+          predicates:
+            - Path=/edu-payment/**
+          filters:
+            - StripPrefix=1
+
+        - id: article_route
+          uri: lb://edu-article-management
+          predicates:
+            - Path=/edu-article-management/**
+          filters:
+            - StripPrefix=1
+
+        - id: institution_route
+          uri: lb://edu-institution-management
+          predicates:
+            - Path=/edu-institution-management/**
+          filters:
+            - StripPrefix=1
+
   zipkin:
     base-url: http://127.0.0.1:9411/
     discovery-client-enabled: false

@@ -12,6 +12,14 @@
         <module>../edu-member-center</module>
         <module>../edu-statistics-center</module>
         <module>../edu-video</module>
+        <module>../edu-payment</module>
+        <module>../edu-order</module>
+        <module>../edu-search</module>
+        <module>../edu-institution-management</module>
+        <module>../edu-article-management</module>
+        <module>../edu-user-oauth</module>
+        <module>../edu-banner</module>
+        <module>../edu-permission-management</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -128,6 +136,7 @@
                 <scope>import</scope>
             </dependency>
 
+
         </dependencies>
     </dependencyManagement>
 
@@ -141,6 +150,12 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
         </dependency>
     </dependencies>
 </project>

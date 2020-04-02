@@ -9,8 +9,10 @@ import com.qianqian.edu.common.entity.EduCourseDescription;
 import com.qianqian.edu.common.exception.QianQianException;
 import com.qianqian.edu.course.management.mapper.EduCourseMapper;
 import com.qianqian.edu.course.management.query.CourseQuery;
+import com.qianqian.edu.course.management.service.EduChapterService;
 import com.qianqian.edu.course.management.service.EduCourseDescriptionService;
 import com.qianqian.edu.course.management.service.EduCourseService;
+import com.qianqian.edu.course.management.service.EduVideoService;
 import com.qianqian.edu.course.management.vo.CoursePublishVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     private EduCourseDescriptionService courseDescriptionService;
+
+    @Autowired
+    private EduVideoService videoService;
+
+    @Autowired
+    private EduChapterService chapterService;
 
     @Transactional
     @Override
@@ -103,6 +111,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
         String title = courseQuery.getTitle();
         String teacherId = courseQuery.getTeacherId();
+        String subjectGrandParentId = courseQuery.getSubjectGrandParentId();
         String subjectParentId = courseQuery.getSubjectParentId();
         String subjectId = courseQuery.getSubjectId();
 
@@ -114,12 +123,14 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             queryWrapper.eq("teacher_id", teacherId);
         }
 
-        if (!StringUtils.isEmpty(subjectParentId)) {
-            queryWrapper.ge("subject_parent_id", subjectParentId);
-        }
-
-        if (!StringUtils.isEmpty(subjectId)) {
-            queryWrapper.ge("subject_id", subjectId);
+        if (!StringUtils.isEmpty(subjectGrandParentId)) {
+            if (!StringUtils.isEmpty(subjectParentId)) {
+                if (!StringUtils.isEmpty(subjectId)) {
+                    queryWrapper.eq("subject_id", subjectId);
+                }
+                queryWrapper.eq("subject_parent_id", subjectParentId);
+            }
+            queryWrapper.eq("subject_grand_parent_id", subjectGrandParentId);
         }
 
         baseMapper.selectPage(pageParam, queryWrapper);
@@ -144,6 +155,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
         String title = courseQuery.getTitle();
         String teacherId = courseQuery.getTeacherId();
+        String subjectGrandParentId = courseQuery.getSubjectGrandParentId();
         String subjectParentId = courseQuery.getSubjectParentId();
         String subjectId = courseQuery.getSubjectId();
 
@@ -155,12 +167,14 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             queryWrapper.eq("teacher_id", teacherId);
         }
 
-        if (!StringUtils.isEmpty(subjectParentId)) {
-            queryWrapper.ge("subject_parent_id", subjectParentId);
-        }
-
-        if (!StringUtils.isEmpty(subjectId)) {
-            queryWrapper.ge("subject_id", subjectId);
+        if (!StringUtils.isEmpty(subjectGrandParentId)) {
+            if (!StringUtils.isEmpty(subjectParentId)) {
+                if (!StringUtils.isEmpty(subjectId)) {
+                    queryWrapper.eq("subject_id", subjectId);
+                }
+                queryWrapper.eq("subject_parent_id", subjectParentId);
+            }
+            queryWrapper.eq("subject_grand_parent_id", subjectGrandParentId);
         }
 
         baseMapper.selectPage(pageParam, queryWrapper);
@@ -175,4 +189,47 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     public boolean failedCourse(String id) {
         return baseMapper.updateById(baseMapper.selectById(id).setStatus(EduCourse.COURSE_Failed))==1;
     }
+
+    @Override
+    public void getCourseByTeacherId(String teacherId,Page<EduCourse> pageParam, CourseQuery courseQuery) {
+        QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("gmt_create");
+        queryWrapper.eq("teacher_id",teacherId);
+
+        if (courseQuery == null){
+            baseMapper.selectPage(pageParam, queryWrapper);
+            return;
+        }
+
+        String title = courseQuery.getTitle();
+        String subjectGrandParentId = courseQuery.getSubjectGrandParentId();
+        String subjectParentId = courseQuery.getSubjectParentId();
+        String subjectId = courseQuery.getSubjectId();
+
+        if (!StringUtils.isEmpty(title)) {
+            queryWrapper.like("title", title);
+        }
+
+        if (!StringUtils.isEmpty(subjectGrandParentId)) {
+            if (!StringUtils.isEmpty(subjectParentId)) {
+                if (!StringUtils.isEmpty(subjectId)) {
+                    queryWrapper.eq("subject_id", subjectId);
+                }
+                queryWrapper.eq("subject_parent_id", subjectParentId);
+            }
+            queryWrapper.eq("subject_grand_parent_id", subjectGrandParentId);
+        }
+        baseMapper.selectPage(pageParam, queryWrapper);
+    }
+
+    @Override
+    public boolean removeCourseById(String courseId) {
+
+        //根据id删除所有章节
+        chapterService.removeByCourseId(courseId);
+
+        Integer result = baseMapper.deleteById(courseId);
+        return null != result && result > 0;
+    }
+
 }

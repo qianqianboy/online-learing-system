@@ -1,0 +1,61 @@
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:/mapper/*.mapper
+server:
+  #服务端口号：8010
+  port: 8010
+spring:
+  application:
+    #微服务名称：机构微服务
+    name: edu-institution-management
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-test-query: SELECT 1
+      connection-timeout: 60000
+      idle-timeout: 500000
+      max-lifetime: 540000
+      maximum-pool-size: 12
+      minimum-idle: 10
+      pool-name: HikariPool
+
+    type: com.zaxxer.hikari.HikariDataSource
+    #MySQL8.0.11连接url
+    url: jdbc:mysql://localhost:3306/qianqian_edu?characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: admin
+  #Sentinel
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    sentinel:
+      transport:
+        port: 9999
+        dashboard: 127.0.0.1:8080
+      filter:
+        enabled: false
+  zipkin:
+    base-url: http://127.0.0.1:9411/
+    discovery-client-enabled: false
+  sleuth:
+    sampler:
+      probability: 0.1
+  #返回json的全局时间格式
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #可指定项目所处环境
+  profiles:
+    active: dev
+### 针对单个服务的 Ribbon 配置
+edu-course-management:
+  ribbon:
+    # 基于配置文件形式的 针对单个服务的 Ribbon 负载均衡策略
+    #根据 Server 的响应时间分配权重。响应时间越长，权重越低，被选择到的概率就越低；响应时间越短，权重越高，被选择到的概率就越高。这个策略很贴切，综合了各种因素，如：网络、磁盘、IO等，这些因素直接影响着响应时间
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.ResponseTimeWeightedRule
+#开启Feign对Sentinel的支持
+feign:
+  sentinel:
+    enabled: true

@@ -46,4 +46,8 @@ public interface EduCourseService extends IService<EduCourse> {
     boolean publishCourse(String id);
 
     boolean failedCourse(String id);
+
+    void getCourseByTeacherId(String id,Page<EduCourse> pageParam, CourseQuery courseQuery);
+
+    boolean removeCourseById(String courseId);
 }

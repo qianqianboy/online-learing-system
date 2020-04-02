@@ -8,3 +8,6 @@ spring:
           file-extension: yaml
   profiles:
     active: dev
+server:
+  #服务端口号：8100
+  port: 8100

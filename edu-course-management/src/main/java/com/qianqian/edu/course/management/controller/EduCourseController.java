@@ -7,6 +7,7 @@ import com.qianqian.edu.common.entity.EduCourse;
 import com.qianqian.edu.common.vo.R;
 import com.qianqian.edu.course.management.query.CourseQuery;
 import com.qianqian.edu.course.management.service.EduCourseService;
+import com.qianqian.edu.course.management.service.EduVideoService;
 import com.qianqian.edu.course.management.vo.CoursePublishVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,9 @@ public class EduCourseController {
 
     @Autowired
     private EduCourseService courseService;
+
+    @Autowired
+    private EduVideoService videoService;
 
 //    @ApiOperation(value = "查询课程列表(不带条件)")
 //    @GetMapping("{page}/{limit}")
@@ -155,5 +159,37 @@ public class EduCourseController {
         return courseService.failedCourse(id) ? R.ok() : R.error().message("驳回失败！");
     }
 
+
+    @ApiOperation(value = "分页查询讲师自己的课程列表")
+    @GetMapping("my-course-list/{teacherId}/{page}/{limit}")
+    public R getCourseByTeacherId(
+            @ApiParam(name = "page", value = "讲师ID", required = true)
+            @PathVariable String teacherId,
+            @ApiParam(name = "page", value = "当前页码", required = true)
+            @PathVariable Long page,
+            @ApiParam(name = "limit", value = "每页记录数", required = true)
+            @PathVariable Long limit,
+            @ApiParam(name = "courseQuery", value = "查询对象")
+                    CourseQuery courseQuery){
+        Page<EduCourse> pageParam = new Page<>(page, limit);
+        courseService.getCourseByTeacherId(teacherId,pageParam, courseQuery);
+        List<EduCourse> records = pageParam.getRecords();
+        long total = pageParam.getTotal();
+        return  R.ok().data("total", total).data("rows", records);
+    }
+
+    @ApiOperation(value = "根据ID删除课程")
+    @DeleteMapping("{id}")
+    public R removeById(
+            @ApiParam(name = "id", value = "课程ID", required = true)
+            @PathVariable String id){
+            videoService.removeByCourseId(id);
+        boolean result = courseService.removeCourseById(id);
+        if(result){
+            return R.ok();
+        }else{
+            return R.error().message("删除失败");
+        }
+    }
 }
 
