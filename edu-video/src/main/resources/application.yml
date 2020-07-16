@@ -1,8 +1,8 @@
 aliyun:
   vod:
     file:
-      keyid: LTAI4FeaHtyyBavbWNQFLcpm
-      keysecret: HRcgxHt20i7BKA8TQjIXlZ8F0G0dCw
+      keyid: yourkeyid
+      keysecret: yourkeysecret
 server:
   port: 8900
 spring:
